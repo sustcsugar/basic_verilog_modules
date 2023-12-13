@@ -10,6 +10,7 @@ Must-have modules for all ICers.
 
 ## Storage
 - [ ] sync fifo
+- [x] fifo_reg
 - [ ] ping-pong sram : sp
 - [ ] ping-pong sram : dp
 - [ ] sram model:sp,dp
