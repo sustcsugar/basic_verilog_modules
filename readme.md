@@ -11,6 +11,7 @@ Must-have modules for all ICers.
 - [ ] ping-pong sram : sp
 - [ ] ping-pong sram : dp
 - [ ] sram model:sp,dp
+- [ ] 桶形寄存器
 
 ## bus
 - [ ] reg_bank.v
