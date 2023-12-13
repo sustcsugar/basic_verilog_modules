@@ -10,3 +10,4 @@ Must-have modules for all ICers.
 - [ ] sync fifo
 - [ ] ping-pong sram : sp
 - [ ] ping-pong sram : dp
+- [ ] sram model:sp,dp
