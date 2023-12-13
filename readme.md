@@ -6,3 +6,7 @@ Must-have modules for all ICers.
 
 ## List
 - [x] Synchronized Asynchronous Reset
+- [ ] Gray2bin function
+- [ ] sync fifo
+- [ ] ping-pong sram : sp
+- [ ] ping-pong sram : dp
