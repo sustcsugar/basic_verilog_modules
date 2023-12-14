@@ -8,6 +8,10 @@ Must-have modules for all ICers.
 - [x] Synchronized Asynchronous Reset
 - [ ] Gray2bin function
 
+## Vision
+- [ ] frame_gen
+
+
 ## Storage
 - [ ] sync fifo
 - [x] fifo_reg
