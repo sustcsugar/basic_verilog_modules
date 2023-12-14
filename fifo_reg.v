@@ -96,23 +96,25 @@ always @(*) begin
         2'b00: //no operation
         2'b01: //write
             begin
-                if (~full)
+                if (~full_reg) begin
                     wr_ptr_next = wr_ptr_next + 1;
                     data_cnt_next = data_cnt_next + 1;
 
-                empty_next = 1'b0;
-                if ( (wr_ptr_next+1) == rd_ptr_reg )
-                    full_next = 1'b1;
+                    empty_next = 1'b0;
+                    if ( (wr_ptr_next+1) == rd_ptr_reg )
+                        full_next = 1'b1;
+                end
             end
         2'b10://read
             begin
-                if (~empty) // not empty
+                if (~empty_reg) begin// not empty
                     rd_ptr_next = rd_ptr_next + 1;
                     data_cnt_next = data_cnt_next - 1;
 
-                full_next = 1'b0;
-                if ( (rd_ptr_next+1) == wr_ptr_reg )
-                    empty_next = 1'b1;
+                    full_next = 1'b0;
+                    if ( (rd_ptr_next+1) == wr_ptr_reg )
+                        empty_next = 1'b1;
+                end
             end
         2'b11:// read write
             begin

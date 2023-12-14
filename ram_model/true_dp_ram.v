@@ -38,7 +38,7 @@ module byte_enabled_true_dual_port_ram
   end
 
   assign data_out1 = data_reg1;
-   
+
   // port B
   always@(posedge clk)
   begin
