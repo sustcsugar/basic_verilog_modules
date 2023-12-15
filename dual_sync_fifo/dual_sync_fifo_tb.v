@@ -25,14 +25,15 @@ module dual_sync_fifo_tb();
 
 
 parameter CLK_PERIOD = 5;
-parameter AWIDTH = 12;
+parameter DEPTH  = 8191;
+parameter AWIDTH = 13;
 parameter DWIDTH = 8;
-parameter CWIDTH = 8;
+parameter CWIDTH = 13;
 
-parameter frame_width=1920;
-parameter frame_height=1080;
-parameter line_blank=50;
-parameter frame_blank=5;
+parameter frame_width=640;
+parameter frame_height=480;
+parameter line_blank=20;
+parameter frame_blank=1;
 
 reg pixclk;
 reg rst_n;
@@ -79,9 +80,9 @@ initial begin
     en_1=1'b0;
     en_2=1'b0;
     
-    #10 en_1 = 1'b1;
-    repeat(1000) @ (posedge pixclk);
-    en_2 = 1'b1;
+    #10 en_2 = 1'b1;
+    repeat(6000) @ (posedge pixclk);
+    en_1 = 1'b1;
     
     #100000000 $finish();
 end
@@ -89,28 +90,33 @@ end
 // **********************************************************
 //             UUT
 // **********************************************************
+wire [7:0] image1_data;
+wire [7:0] image2_data;
+assign  image1_data = (    data_in_lval&    data_in_fval)?    pixel_counter[7:0]:0;
+assign  image2_data = (sec_data_in_lval&sec_data_in_fval)?sec_pixel_counter[7:0]:0;
+
 dual_sync_fifo
 #(
-    .DEPTH   (  4096) ,
-    .AWIDTH  (  10  ),
-    .DWIDTH  (  8   ),
-    .CWIDTH  (  10  )
+    .DEPTH   (  DEPTH ) ,
+    .AWIDTH  ( AWIDTH ),
+    .DWIDTH  ( DWIDTH ),
+    .CWIDTH  ( CWIDTH )
 )
 UUT_sync_fifo
 (
       .rst_n        (  rst_n          )      // input           
       
     , .pixclk1      (  pixclk                 )      // input           
-    , .image1_hs    (  data_in_lval           )      // input           
-    , .image1_vs    (  data_in_fval && ~data_in_fval_dly           )      // input           
-    , .image1_valid (  data_in_lval           )      // input           
-    , .image1_data  (  pixel_counter[7:0]     )      // input   [7:0]   
+    , .image1_hs    (  data_in_lval&data_in_fval           )      // input           
+    , .image1_vs    (  data_in_fval           )      // input           
+    , .image1_valid (  data_in_lval&data_in_fval           )      // input           
+    , .image1_data  (  image1_data     )      // input   [7:0]   
       
     , .pixclk2      (   pixclk                )      // input           
-    , .image2_hs    (   sec_data_in_lval      )      // input           
-    , .image2_vs    (  sec_data_in_fval && ~sec_data_in_fval_fly      )      // input           
-    , .image2_valid (   sec_data_in_lval      )      // input           
-    , .image2_data  (   sec_pixel_counter[7:0])      // input   [7:0]   
+    , .image2_hs    (   sec_data_in_lval&sec_data_in_fval      )      // input           
+    , .image2_vs    (   sec_data_in_fval      )      // input           
+    , .image2_valid (   sec_data_in_lval&sec_data_in_fval      )      // input           
+    , .image2_data  (   image2_data)      // input   [7:0]   
       
     , .o_pixclk     (   o_pixclk              )      // output          
     , .o_image_hs   (   o_image_hs            )      // output          
@@ -146,7 +152,7 @@ frm_gen
 .line_blank     (line_blank  ),
 .frame_blank    (frame_blank )
 )
-UUT_grm_gen_2(
+UUT_frm_gen_2(
   .pixclk       ( pixclk      )              // input               
 , .rst_n        ( rst_n       )              // input               
 , .en           ( en_2        )              // input               
