@@ -9,16 +9,18 @@ Must-have modules for all ICers.
 - [ ] Gray2bin function
 
 ## Vision
-- [ ] frame_gen
+- [x] frame_gen
 
 
 ## Storage
-- [ ] sync fifo
-- [x] fifo_reg
+- [x] sync fifo: reg
+- [x] async fifo : ram
+- [x] async fifo : reg
+- [x] dual_sync_fifo
 - [ ] ping-pong sram : sp
 - [ ] ping-pong sram : dp
 - [ ] sram model:sp,dp
-- [ ] 桶形寄存器
+- [ ] barrel reg
 
 ## BUS
 - [ ] reg_bank.v
